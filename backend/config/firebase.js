@@ -6,31 +6,36 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+let serviceAccount;
 
-const serviceAccountPath = path.join(
-    __dirname,
-    "../firebase-service-account.json"
-);
+// Render / Production
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    serviceAccount = JSON.parse(
+        process.env.FIREBASE_SERVICE_ACCOUNT
+    );
+}
 
+// Local development
+else {
+    const serviceAccountPath = path.join(
+        __dirname,
+        "../firebase-service-account.json"
+    );
 
-const serviceAccount = JSON.parse(
-    fs.readFileSync(serviceAccountPath, "utf8")
-);
-
+    serviceAccount = JSON.parse(
+        fs.readFileSync(serviceAccountPath, "utf8")
+    );
+}
 
 const firebaseApp = initializeApp({
     credential: cert(serviceAccount)
 });
 
-
 const firebaseAuth = getAuth(firebaseApp);
-
 const firebaseMessaging = getMessaging(firebaseApp);
-
 
 export {
     firebaseAuth,
