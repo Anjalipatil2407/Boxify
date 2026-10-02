@@ -6,13 +6,11 @@ import { Server } from "socket.io";
 
 import connectDB from "./config/db.js";
 
-
 // =====================================================
 // MODELS
 // =====================================================
 
 import Shipment from "./models/Shipment.js";
-
 
 // =====================================================
 // ROUTES
@@ -26,13 +24,11 @@ import shipmentRoutes from "./routes/shipmentRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 import firebaseRoutes from "./routes/firebaseRoutes.js";
 
-
 // =====================================================
 // ENVIRONMENT VARIABLES
 // =====================================================
 
 dotenv.config();
-
 
 // =====================================================
 // EXPRESS APP
@@ -40,6 +36,14 @@ dotenv.config();
 
 const app = express();
 
+// =====================================================
+// ALLOWED FRONTEND URLS
+// =====================================================
+
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://boxify-i7jt.onrender.com"
+];
 
 // =====================================================
 // CORS
@@ -47,14 +51,13 @@ const app = express();
 
 app.use(
     cors({
-        origin: "http://localhost:5173"
+        origin: allowedOrigins,
+        credentials: true
     })
 );
 
-
 // Allows Express to read JSON
 app.use(express.json());
-
 
 // =====================================================
 // HTTP SERVER
@@ -62,19 +65,17 @@ app.use(express.json());
 
 const server = http.createServer(app);
 
-
 // =====================================================
 // SOCKET.IO
 // =====================================================
 
 const io = new Server(server, {
-
     cors: {
-        origin: "http://localhost:5173"
+        origin: allowedOrigins,
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+        credentials: true
     }
-
 });
-
 
 // =====================================================
 // MAKE SOCKET.IO AVAILABLE TO CONTROLLERS
@@ -82,13 +83,11 @@ const io = new Server(server, {
 
 app.set("io", io);
 
-
 // =====================================================
 // DATABASE CONNECTION
 // =====================================================
 
 connectDB();
-
 
 // =====================================================
 // API ROUTES
@@ -100,13 +99,11 @@ app.use(
     authRoutes
 );
 
-
 // Plans
 app.use(
     "/api/plans",
     planRoutes
 );
-
 
 // Subscriptions
 app.use(
@@ -114,13 +111,11 @@ app.use(
     subscriptionRoutes
 );
 
-
 // Customizations
 app.use(
     "/api/customizations",
     customizationRoutes
 );
-
 
 // Shipments
 app.use(
@@ -128,13 +123,11 @@ app.use(
     shipmentRoutes
 );
 
-
 // Firebase Push Notifications
 app.use(
     "/api/notifications",
     notificationRoutes
 );
-
 
 // Firebase Authentication Verification
 app.use(
@@ -142,19 +135,13 @@ app.use(
     firebaseRoutes
 );
 
-
 // =====================================================
 // HOME TEST ROUTE
 // =====================================================
 
 app.get("/", (req, res) => {
-
-    res.send(
-        "Boxify server is running 📦"
-    );
-
+    res.send("Boxify server is running 📦");
 });
-
 
 // =====================================================
 // SOCKET.IO CONNECTION
@@ -166,7 +153,6 @@ io.on("connection", (socket) => {
         "User connected:",
         socket.id
     );
-
 
     // =================================================
     // SOCKET TEST / DIRECT SOCKET UPDATE
@@ -183,7 +169,6 @@ io.on("connection", (socket) => {
                     status
                 } = data;
 
-
                 // Allowed shipment statuses
                 const allowedStatuses = [
                     "preparing",
@@ -193,11 +178,8 @@ io.on("connection", (socket) => {
                     "delivered"
                 ];
 
-
                 // Validate status
-                if (
-                    !allowedStatuses.includes(status)
-                ) {
+                if (!allowedStatuses.includes(status)) {
 
                     console.log(
                         "Invalid shipment status"
@@ -206,22 +188,17 @@ io.on("connection", (socket) => {
                     return;
                 }
 
-
                 // Update shipment in MongoDB
                 const shipment =
                     await Shipment.findByIdAndUpdate(
-
                         shipmentId,
-
                         {
                             status: status
                         },
-
                         {
                             returnDocument: "after",
                             runValidators: true
                         }
-
                     )
                     .populate({
                         path: "subscription",
@@ -229,7 +206,6 @@ io.on("connection", (socket) => {
                             path: "plan"
                         }
                     });
-
 
                 // Shipment not found
                 if (!shipment) {
@@ -241,19 +217,16 @@ io.on("connection", (socket) => {
                     return;
                 }
 
-
                 console.log(
                     "Shipment status updated:",
                     shipment.status
                 );
-
 
                 // Send update to connected frontend
                 io.emit(
                     "shipmentStatusUpdated",
                     shipment
                 );
-
 
             } catch (error) {
 
@@ -266,7 +239,6 @@ io.on("connection", (socket) => {
 
         }
     );
-
 
     // =================================================
     // DISCONNECT
@@ -286,14 +258,12 @@ io.on("connection", (socket) => {
 
 });
 
-
 // =====================================================
 // START SERVER
 // =====================================================
 
 const PORT =
     process.env.PORT || 3000;
-
 
 server.listen(
     PORT,
