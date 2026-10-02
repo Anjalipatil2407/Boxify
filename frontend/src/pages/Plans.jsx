@@ -13,7 +13,7 @@ function Plans() {
     const fetchPlans = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/plans"
+          "https://boxify-1.onrender.com/api/plans"
         );
 
         const data = await response.json();

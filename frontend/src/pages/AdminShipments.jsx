@@ -33,7 +33,7 @@ function AdminShipments() {
     try {
 
       const response = await fetch(
-        "http://localhost:3000/api/shipments/admin/all",
+        "https://boxify-1.onrender.com/api/shipments/admin/all",
         {
           headers: {
 
@@ -131,7 +131,7 @@ function AdminShipments() {
 
       const response = await fetch(
 
-        `http://localhost:3000/api/shipments/${shipmentId}/status`,
+        `https://boxify-1.onrender.com/api/shipments/${shipmentId}/status`,
 
         {
 

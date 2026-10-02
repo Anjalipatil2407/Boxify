@@ -67,9 +67,9 @@ function Auth() {
 
       const endpoint = isLogin
 
-        ? "http://localhost:3000/api/auth/login"
+        ? "https://boxify-1.onrender.com/api/auth/login"
 
-        : "http://localhost:3000/api/auth/register";
+        : "https://boxify-1.onrender.com/api/auth/register";
 
 
       const bodyData = isLogin
@@ -233,7 +233,7 @@ function Auth() {
 
       const firebaseResponse =
         await fetch(
-          "http://localhost:3000/api/firebase/verify",
+          "https://boxify-1.onrender.com/api/firebase/verify",
           {
             method: "GET",
 

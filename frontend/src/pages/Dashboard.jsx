@@ -35,7 +35,7 @@ function Dashboard() {
         // ===============================================
 
         const subscriptionResponse = await fetch(
-          "http://localhost:3000/api/subscriptions",
+          "https://boxify-1.onrender.com/api/subscriptions",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -88,7 +88,7 @@ function Dashboard() {
 
         const customizationResponse =
           await fetch(
-            "http://localhost:3000/api/customizations",
+            "https://boxify-1.onrender.com/api/customizations",
             {
               headers: {
                 Authorization:
@@ -177,7 +177,7 @@ function Dashboard() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/subscriptions/${subscription._id}`,
+        `https://boxify-1.onrender.com/api/subscriptions/${subscription._id}`,
         {
           method: "PUT",
 
@@ -245,7 +245,7 @@ function Dashboard() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/subscriptions/${subscription._id}`,
+        `https://boxify-1.onrender.com/api/subscriptions/${subscription._id}`,
         {
           method: "DELETE",
 

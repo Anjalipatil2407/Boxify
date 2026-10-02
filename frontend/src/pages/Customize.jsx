@@ -76,7 +76,7 @@ function Customize() {
 
       try {
         const response = await fetch(
-          "http://localhost:3000/api/customizations",
+          "https://boxify-1.onrender.com/api/customizations",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -173,7 +173,7 @@ function Customize() {
     token
   ) => {
     const response = await fetch(
-      `http://localhost:3000/api/customizations/${subscriptionId}`,
+      `https://boxify-1.onrender.com/api/customizations/${subscriptionId}`,
       {
         method: "PUT",
 
@@ -324,7 +324,7 @@ function Customize() {
 
       const subscriptionResponse =
         await fetch(
-          "http://localhost:3000/api/subscriptions",
+          "https://boxify-1.onrender.com/api/subscriptions",
           {
             method: "POST",
 

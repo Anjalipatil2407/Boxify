@@ -28,7 +28,7 @@ function Track() {
     const fetchShipment = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/shipments",
+          "https://boxify-1.onrender.com/api/shipments",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ function Track() {
 
   useEffect(() => {
     const socket = io(
-      "http://localhost:3000"
+      "https://boxify-1.onrender.com"
     );
 
     socket.on(
